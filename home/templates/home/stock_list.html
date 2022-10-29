@@ -8,7 +8,7 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.104.2">
 
-    <title>서치값의 어쩌구 저쩌구</title>
+    <title>{{ data }} - BASI 분석</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/navbar-fixed/">
     <link rel="stylesheet" href="{% static 'home/bootstrap/bootstrap.min.css' %}" media="screen">
 
@@ -19,7 +19,7 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-white" style="box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%)">
   <div class="container-fluid">
       <div class = "logo" style="padding: 0 32px 0 32px">
-          <a href="#" title="BASI 홈페이지 이동" id="logo">
+          <a href="/" title="BASI 홈페이지 이동" id="logo">
               <img src="/static/home/images/BASI_LOGO.png" style="background:none" height="30" width="92" data-atf="1" data-frt="0">
           </a>
       </div>
@@ -31,21 +31,108 @@
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
       </ul>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="005930" aria-label="Search" id="search-input">
+        <input class="form-control me-2" type="search" placeholder="Code" aria-label="Search" id="search-input">
         <button class="btn btn-outline-success" type="submit" onclick="searchStock();">Search</button>
       </form>
     </div>
   </div>
 </nav>
 
-{% if post_list.exists %}
 
-{% else %}
-    <h3>
-        아직 게시물이 없습니다.
-        {% if search_info %}<small class="text-muted">{{ search_info }}</small>{% endif %}
-    </h3>
-{% endif %}
+
+ <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4" style="font-weight: bold;">{{ search_info }}</h1>
+
+        <!-- Date/Time -->
+        <p style="color:grey">Date/Time(2022.10.22 ~ 2022.10.29) (개발 예정)</p>
+
+
+        <hr>
+
+        <!-- Post Content -->
+        <h5 style="font-weight: bold;">Post Count</h5>
+
+          <h4 style="margin:50px">Graph</h4>
+
+          <hr>
+
+          <h5 style="font-weight: bold;">Word Cloud</h5>
+
+          <h4 style="margin:50px">Cloud</h4>
+
+          <hr>
+
+          <h5 style="font-weight: bold;">Sentiment Analysis</h5>
+
+          <h4 style="margin:50px">Graph</h4>
+
+          <hr>
+
+
+
+        <!-- Single Comment
+        <div class="media mb-4">
+          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+          <div class="media-body">
+            <h5 class="mt-0">Commenter Name</h5>
+            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+          </div>
+        </div>
+        -->
+
+        <!-- Comment with nested comments
+        <div class="media mb-4">
+          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+          <div class="media-body">
+            <h5 class="mt-0">Commenter Name</h5>
+            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+
+            <div class="media mt-4">
+              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+              <div class="media-body">
+                <h5 class="mt-0">Commenter Name</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+              </div>
+            </div>
+
+            <div class="media mt-4">
+              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+              <div class="media-body">
+                <h5 class="mt-0">Commenter Name</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+              </div>
+            </div>     -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Bootstrap core JavaScript -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+
 
 
 
