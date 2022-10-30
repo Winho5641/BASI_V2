@@ -7,8 +7,12 @@ from multiprocessing import Pool
 
 
 def href_stock_crawling(link):
-    ## 전역변수 오늘 날짜, 어제 날짜 가져오기
-    global today, yesterday
+
+    ## 데이터 수집 날짜
+    temp_today = datetime.datetime.now()
+    temp_yesterday = temp_today - datetime.timedelta(days=1)  ## 원하는 Days(2)동안의 날짜
+    today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
+    yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(2)
 
     post_data = []  ## ex) day, time, title, content, good, bad
 
@@ -49,8 +53,14 @@ def href_stock_crawling(link):
 
 
 def stock_crawling(item):
-    ## 전역변수 오늘 날짜, 어제 날짜, 데이터 가져오기
-    global today, yesterday, Data
+    ## 데이터 수집 날짜
+    temp_today = datetime.datetime.now()
+    temp_yesterday = temp_today - datetime.timedelta(days=1)  ## 원하는 Days(2)동안의 날짜
+    today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
+    yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(2)
+
+    ## 크롤링 데이터 List
+    Data = []
 
     ## 기본 페이지는 1page
     page = '1'
@@ -91,35 +101,12 @@ def stock_crawling(item):
 
         ## 수집된 데이터에서 None이 있다는 것은 수집해야하는 날짜에서 벗어났다는 뜻이므로 크롤링 종료
         if (None in post_datas):
-            return
+            return Data
 
         ## 다음 페이지 전환 (아직 날짜에 벗어나지 않았음)
         page = str(int(page) + 1)
 
 
 ## 오늘 날짜와 어제 날짜 구하기 (전역변수)
-temp_today = datetime.datetime.now()
-temp_yesterday = temp_today - datetime.timedelta(days=2)  ## 원하는 Days(2)동안의 날짜
-today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
-yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(2)
-Data = []  ## 크롤링 데이터 List
 
-## 메인 함수
-if __name__ == '__main__':
-    ## 종목 코드
-    item_list = ['122630']
 
-    ## 크롤링 함수
-    stock_crawling(item_list[0])
-
-    ## 데이터 중복 제거
-    Data = list(set([tuple(Arr) for Arr in Data]))
-
-    ## 중복 제거로 인한 순서가 랜덤으로 바뀌어서 정렬
-    Data.sort(key=lambda x: x[1])
-
-    ## 정렬된 데이터 Reverse
-    Data.reverse()
-
-    ## 데이터를 DataFrame으로 전환
-    df = pd.DataFrame(Data, columns=["day", "time", "title", "content", "good", "bad"])
