@@ -1,18 +1,27 @@
+import re
 from urllib.request import urlopen
+from PIL import ImageFont
+from konlpy.tag import Okt
+from wordcloud import WordCloud
+from io import BytesIO
+import base64
+import mpld3
+import numpy as np
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
 import datetime
 import pandas as pd
 from multiprocessing import Pool
-
+import matplotlib.pyplot as plt
+from PIL import Image
 
 def href_stock_crawling(link):
 
     ## 데이터 수집 날짜
     temp_today = datetime.datetime.now()
-    temp_yesterday = temp_today - datetime.timedelta(days=1)  ## 원하는 Days(2)동안의 날짜
+    temp_yesterday = temp_today - datetime.timedelta(days=7)  ## 원하는 Days(7)동안의 날짜
     today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
-    yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(2)
+    yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(7)
 
     post_data = []  ## ex) day, time, title, content, good, bad
 
@@ -55,9 +64,9 @@ def href_stock_crawling(link):
 def stock_crawling(item):
     ## 데이터 수집 날짜
     temp_today = datetime.datetime.now()
-    temp_yesterday = temp_today - datetime.timedelta(days=1)  ## 원하는 Days(2)동안의 날짜
+    temp_yesterday = temp_today - datetime.timedelta(days=7)  ## 원하는 Days(7)동안의 날짜
     today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
-    yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(2)
+    yesterday = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(7)
 
     ## 크롤링 데이터 List
     Data = []
@@ -106,7 +115,118 @@ def stock_crawling(item):
         ## 다음 페이지 전환 (아직 날짜에 벗어나지 않았음)
         page = str(int(page) + 1)
 
+def Count_Graph(days) :
+    ## 데이터 수집 날짜
+    temp_today = datetime.datetime.now()
+    temp_yesterday = temp_today - datetime.timedelta(days=7)  ## 원하는 Days(2)동안의 날짜
+    today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
 
-## 오늘 날짜와 어제 날짜 구하기 (전역변수)
+    ## Post Count 계산을 위한 List
+    post_count = [0 for _ in range(7)]      ## post count List
+    post_day = []                           ## post Day List
+    ## post day list 안에 날짜 넣기
+    for i in range(6, -1, -1):
+        temp_today = datetime.datetime.now()
+        temp_postday = temp_today - datetime.timedelta(days=i)
+        postday = temp_postday.strftime('%Y.%m.%d')
+        post_day.append(postday)
+    temp_day = today
+    n = 0
+    ## Post Count 실행
+    for day in days:
+        if (day in post_day):
+            post_count[post_day.index(day)] += 1
 
+    fig, ax = plt.subplots()
+    ind = range(1, len(post_day) + 1)
 
+    ax.plot(ind, post_count, solid_capstyle='round', color='#1F879D', linewidth=2, marker="H")
+    ax.set_xticks(ind)
+    ax.set_xticklabels(post_day)
+    graph = mpld3.fig_to_html(fig)
+    return graph
+
+## 불필요 문자 제거 함수
+def filter(text) :
+    cleaned_text = re.sub('[^가-힣]' , ' ', text)  ## 한글이 아닌 모든 문자 제거
+    cleaned_text = re.sub(' +', ' ', cleaned_text) ## 중복된 공백 축소
+    return cleaned_text
+
+## title 불용어제거 + 형태소 분석
+def title_pos(data):
+    ## 불필요 문자 제거
+    data['title'] = data['title'].map(filter)
+
+    ## Data에서 제목 추출
+    stock_title = data['title']
+
+    okt = Okt()  ## 세종사전 실행하기
+
+    ## 형태소 분석 List 생성
+    title_pos = []
+
+    ## 형태소 분석 (title)
+    for n in range(0, len(data)):
+        morph_title = okt.pos(stock_title[n])
+        title_pos.append(morph_title)
+
+    return title_pos
+
+## content 불용어제거 + 형태소 분석
+def content_pos(data):
+    ## 불필요 문자 제거
+    data['content'] = data['content'].map(filter)
+
+    ## Data에서 내용 추출
+    stock_content = data['content']
+
+    okt = Okt()  ## 세종사전 실행하기
+
+    ## 형태소 분석 List 생성
+    content_pos = []
+
+    ## 형태소 분석 (content)
+    for n in range(0, len(data)):
+        morph_content = okt.pos(stock_content[n])
+        content_pos.append(morph_content)
+
+    return content_pos
+
+## title + content 명사 추출
+def Noun_filter(title_pos, content_pos):
+    ## 명사 모음 List
+    noun_list = []
+
+    ## title의 명사 추출
+    for sentence in title_pos:
+        for word, tag in sentence:
+            if (tag in ["Noun"]):
+                noun_list.append(word)
+
+    ## content의 명사 추출
+    for sentence in content_pos:
+        for word, tag in sentence:
+            if (tag in ["Noun"]):
+                noun_list.append(word)
+
+    return noun_list
+
+## WordCloud Color
+def color_func(word, font_size, position,orientation,random_state=None, **kwargs):
+    return("hsl({:d},{:d}%, {:d}%)".format(190, 67, 37))
+
+def Word_Cloud(words) :
+    custom_mask = np.array(Image.open("home/static/home/images/oval.png"))
+    fig, ax = plt.subplots()
+    font = ImageFont.load_default()
+    #font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/BlackHanSans-Regular.ttf'
+    wordcloud = WordCloud(font_path='Verdana.ttf', background_color='white', color_func=color_func, width=1000, height=800,
+                          mask=custom_mask,
+                          # contour_color='#000000',contour_width=3,  ## 테두리 작업
+                          prefer_horizontal=True).generate_from_frequencies(dict(words))
+    ax.figure(figsize=(15, 10))  # witdh, height비율은 유지하면서 보여지는 크기 지정
+    ax.imshow(wordcloud)
+    ax.axis('off')
+
+    cloud = mpld3.fig_to_html(fig)
+    return cloud
