@@ -48,6 +48,12 @@ class StockSearch(StockList):
 
         context['Analys'] = Analy
 
+        ## 데이터 수집 날짜
+        temp_today = datetime.datetime.now()
+        temp_yesterday = temp_today - datetime.timedelta(days=7)  ## 원하는 Days(7)동안의 날짜
+        context['today'] = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
+        context['yesterday'] = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(7)
+
         ## post count graph 함수
         context['Count_graph'] = crawling.Count_Graph(Analy.day)
 
