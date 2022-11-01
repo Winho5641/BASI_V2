@@ -1,4 +1,5 @@
 import re
+import matplotlib.font_manager as fm
 from urllib.request import urlopen
 from PIL import ImageFont
 from konlpy.tag import Okt
@@ -218,13 +219,12 @@ def color_func(word, font_size, position,orientation,random_state=None, **kwargs
 def Word_Cloud(words) :
     custom_mask = np.array(Image.open("home/static/home/images/oval.png"))
     fig, ax = plt.subplots()
-    font = ImageFont.load_default()
-    #font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/BlackHanSans-Regular.ttf'
-    wordcloud = WordCloud(font_path='Verdana.ttf', background_color='white', color_func=color_func, width=1000, height=800,
+
+    font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/BlackHanSans-Regular.ttf'
+    wordcloud = WordCloud(font_path=font, background_color='white', color_func=color_func, width=1000, height=800,
                           mask=custom_mask,
                           # contour_color='#000000',contour_width=3,  ## 테두리 작업
                           prefer_horizontal=True).generate_from_frequencies(dict(words))
-    ax.figure(figsize=(15, 10))  # witdh, height비율은 유지하면서 보여지는 크기 지정
     ax.imshow(wordcloud)
     ax.axis('off')
 

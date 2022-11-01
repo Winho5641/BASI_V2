@@ -52,32 +52,32 @@
         <h1 class="mt-4" style="font-weight: bold;">{{ search_info }}</h1>
 
         <!-- Date/Time -->
-        <p style="color:grey">{{ yesterday }} ~ {{ today }})</p>
+        <p style="color:grey">{{ yesterday }} ~ {{ today }}</p>
 
 
         <hr>
 
         <!-- Post Content -->
-        <h5 style="font-weight: bold;">Post Count</h5>
+        <h4 style="font-weight: bold;">Post Count Graph</h4>
 
           {% autoescape off %}
-          <div style="margin:50px">{{ Count_graph }}</div>
+          <div style="margin:20px;">{{ Count_graph }}</div>
           {% endautoescape %}
 
           <!-- <h4 style="margin:50px">{{ Analys.title }}</h4> -->
 
           <hr>
 
-          <h5 style="font-weight: bold;">Word Cloud</h5>
+          <h4 style="font-weight: bold;">Word Cloud</h4>
 
           {% autoescape off %}
-          <div style="margin:50px">{{ Word_cloud }}</div>
+          <div style="margin:20px;">{{ Word_cloud }}</div>
             {% endautoescape %}
           <hr>
 
-          <h5 style="font-weight: bold;">Sentiment Analysis</h5>
+          <h4 style="font-weight: bold;">Sentiment Analysis</h4>
 
-          <h4 style="margin:50px">Graph</h4>
+          <div> style="margin:20px">Graph</div>
 
           <hr>
 
