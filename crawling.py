@@ -1,5 +1,6 @@
 import re
 import matplotlib.font_manager as fm
+import matplotlib.dates as mdates
 from urllib.request import urlopen
 from PIL import ImageFont
 from konlpy.tag import Okt
@@ -118,33 +119,40 @@ def stock_crawling(item):
 
 ## post count graph 생성
 def Count_Graph(days) :
-    ## 데이터 수집 날짜
-    temp_today = datetime.datetime.now()
-    temp_yesterday = temp_today - datetime.timedelta(days=7)  ## 원하는 Days(2)동안의 날짜
-    today = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
 
     ## Post Count 계산을 위한 List
     post_count = [0 for _ in range(7)]      ## post count List
     post_day = []                           ## post Day List
+
     ## post day list 안에 날짜 넣기
     for i in range(6, -1, -1):
         temp_today = datetime.datetime.now()
         temp_postday = temp_today - datetime.timedelta(days=i)
         postday = temp_postday.strftime('%Y.%m.%d')
         post_day.append(postday)
-    temp_day = today
-    n = 0
+
     ## Post Count 실행
     for day in days:
         if (day in post_day):
             post_count[post_day.index(day)] += 1
 
-    fig, ax = plt.subplots()
-    ind = range(1, len(post_day) + 1)
+    post_day = []
+    for i in range(6, -1, -1):
+        temp_today = datetime.datetime.now()
+        temp_postday = temp_today - datetime.timedelta(days=i)
+        postday = temp_postday.strftime('%Y.%m.%d')
+        post_day.append(datetime.datetime.strptime(postday, '%Y.%m.%d'))
 
-    ax.plot(ind, post_count, solid_capstyle='round', color='#1F879D', linewidth=2, marker="H")
-    ax.set_xticks(ind)
-    ax.set_xticklabels(post_day)
+    fig, ax = plt.subplots()
+
+    ax.plot(post_day, post_count, solid_capstyle='round', color='#1F879D', linewidth=2, marker="H")
+    #ax.set_xticks(ind)
+    #ax.set_xticklabels(post_day)
+    dateFmt = mdates.DateFormatter('%Y.%m.%d')
+    ax.xaxis.set_major_formatter(dateFmt)
+    plt.xticks(post_day)
+    plt.yticks(post_count)
+    ax.grid(True, alpha=0.1)
     graph = mpld3.fig_to_html(fig)
     return graph
 
@@ -229,8 +237,10 @@ def Word_Cloud(words) :
                           # contour_color='#000000',contour_width=3,  ## 테두리 작업
                           prefer_horizontal=True).generate_from_frequencies(dict(words))
     ax.imshow(wordcloud)
+    ax.set_xticks([])
+    ax.set_yticks([])
     ax.axis('off')
-
+    plt.axis('off')
     cloud = mpld3.fig_to_html(fig)
     return cloud
 
@@ -269,6 +279,10 @@ def sentiment_score(title_pos, content_pos) :
 ## sentiment pie graph 생성
 def Sentiment_graph(pos, neg) :
     ratio = [pos, neg]
+
+    if(pos == 0 and neg == 0) :
+        return "감정 데이터가 없습니다."
+
     labels = ["POSITIVE", "NEGATIVE"]
     group_colors = ['#5199D3', '#EA5C68']
     fig, ax = plt.subplots()
@@ -276,7 +290,7 @@ def Sentiment_graph(pos, neg) :
     ax.pie(ratio,
             colors=group_colors,
             textprops={'fontsize': 16, 'weight': 'bold'},
-            startangle=250,
+            startangle=270,
             autopct='%.1f%%')
 
     ax.axis('off')
