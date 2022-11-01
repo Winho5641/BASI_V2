@@ -292,7 +292,7 @@ def Sentiment_graph(pos, neg) :
             textprops={'fontsize': 16, 'weight': 'bold'},
             startangle=270,
             autopct='%.1f%%')
-
+    plt.legend(labels)
     ax.axis('off')
 
     graph = mpld3.fig_to_html(fig)
