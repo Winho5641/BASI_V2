@@ -116,6 +116,7 @@ def stock_crawling(item):
         ## 다음 페이지 전환 (아직 날짜에 벗어나지 않았음)
         page = str(int(page) + 1)
 
+## post count graph 생성
 def Count_Graph(days) :
     ## 데이터 수집 날짜
     temp_today = datetime.datetime.now()
@@ -216,7 +217,9 @@ def Noun_filter(title_pos, content_pos):
 def color_func(word, font_size, position,orientation,random_state=None, **kwargs):
     return("hsl({:d},{:d}%, {:d}%)".format(190, 67, 37))
 
+## word cloud 생성
 def Word_Cloud(words) :
+    ## word cloud 틀
     custom_mask = np.array(Image.open("home/static/home/images/oval.png"))
     fig, ax = plt.subplots()
 
@@ -230,3 +233,53 @@ def Word_Cloud(words) :
 
     cloud = mpld3.fig_to_html(fig)
     return cloud
+
+def sentiment_score(title_pos, content_pos) :
+    sent_dic = pd.read_csv("home/static/home/csv/knu_sentiment_lexicon.csv")
+
+    ## dataframe -> list 변환
+    sent_word = np.array(sent_dic['word'].tolist())
+    sent_polarity = np.array(sent_dic['polarity'].tolist())
+
+    ## 감성분석을 위한 단어 모음 List (Base는 0으로 시작)
+    sent_score = [0 for _ in range(len(title_pos))]
+
+    ## Post = title + content + good + bad
+    ## title의 형용사, 동사, 명사에 대한 감성 점수 부여
+    n = 0
+    for sentence in title_pos:
+        for word, tag in sentence:
+            if (tag in ["Adjective", "Verb", "Noun"]):
+                if (word in sent_word):
+                    sent_score[n] += int(sent_polarity[np.where(sent_word == word)])
+        n += 1
+
+    ## content의 형용사, 동사, 명사에 대한 감성 점수 부여
+    n = 0
+    for sentence in content_pos:
+        n = 0
+        for word, tag in sentence:
+            if (tag in ["Adjective", "Verb", "Noun"]):
+                if (word in sent_word):
+                    sent_score[n] += int(sent_polarity[np.where(sent_word == word)])
+        n += 1
+
+    return sent_score
+
+## sentiment pie graph 생성
+def Sentiment_graph(pos, neg) :
+    ratio = [pos, neg]
+    labels = ["POSITIVE", "NEGATIVE"]
+    group_colors = ['#5199D3', '#EA5C68']
+    fig, ax = plt.subplots()
+
+    ax.pie(ratio,
+            colors=group_colors,
+            textprops={'fontsize': 16, 'weight': 'bold'},
+            startangle=250,
+            autopct='%.1f%%')
+
+    ax.axis('off')
+
+    graph = mpld3.fig_to_html(fig)
+    return graph

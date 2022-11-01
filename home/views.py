@@ -48,12 +48,6 @@ class StockSearch(StockList):
 
         context['Analys'] = Analy
 
-        ## 데이터 수집 날짜
-        temp_today = datetime.datetime.now()
-        temp_yesterday = temp_today - datetime.timedelta(days=7)  ## 원하는 Days(7)동안의 날짜
-        context['today'] = temp_today.strftime('%Y.%m.%d')  ## 오늘 날짜
-        context['yesterday'] = temp_yesterday.strftime('%Y.%m.%d')  ## 원하는 날짜 Days(7)
-
         ## post count graph 함수
         context['Count_graph'] = crawling.Count_Graph(Analy.day)
 
@@ -74,7 +68,25 @@ class StockSearch(StockList):
         ## Word Cloud 함수
         context['Word_cloud'] = crawling.Word_Cloud(tags)
 
+        sent_score = crawling.sentiment_score(stock_title_pos, stock_content_pos)
 
+        ## Post의 긍정,부정에 따라 Good, Bad 추가 감성 점수 부여
+        for i in range(len(Analy)):
+            if (sent_score[i] > 0):
+                sent_score[i] += Analy.good[i] - Analy.bad[i]
+            elif (sent_score[i] < 0):
+                sent_score[i] += Analy.bad[i] - Analy.good[i]
+
+        ## 최종 Post 감성 점수의 긍정, 부정 비율
+        pos_post = neg_post = 0  ## 긍정 게시물과 부정 게시물 Count
+        for score in sent_score:
+            if (score > 0):
+                pos_post += 1
+            elif (score < 0):
+                neg_post += 1
+
+        ## Sentiment Pie Graph 함수
+        context['Sent_graph'] = crawling.Sentiment_graph(pos_post, neg_post)
         return context
 
     template_name = 'home/stock_list.html'
