@@ -291,7 +291,7 @@ def Sentiment_graph(pos, neg) :
             colors=group_colors,
             textprops={'fontsize': 16, 'weight': 'bold'},
             startangle=270,
-            autopct='%.1f%%')
+            autopct = lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '')
     plt.legend(labels)
     ax.axis('off')
 
