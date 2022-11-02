@@ -228,7 +228,7 @@ def color_func(word, font_size, position,orientation,random_state=None, **kwargs
 ## word cloud 생성
 def Word_Cloud(words) :
     ## word cloud 틀
-    custom_mask = np.array(Image.open("home/static/home/images/oval.png"))
+    custom_mask = np.array(Image.open("home/static/home/css/oval.png"))
     fig, ax = plt.subplots()
 
     font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/BlackHanSans-Regular.ttf'
