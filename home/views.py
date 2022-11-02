@@ -15,7 +15,6 @@ def landing(request):
         'home/landing.html'
     )
 
-
 class StockList(ListView):
     model = Stock
 
