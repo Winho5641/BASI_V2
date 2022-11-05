@@ -776,9 +776,6 @@ class StockSearch(StockList):
         ## post count graph 함수
         context['Count_graph'] = crawling.Count_Graph(Analy.day)
 
-        ## TEST
-        return context
-
         ## title, content 불용어제거 + 형태소 분석 실행
         stock_title_pos = crawling.title_pos(Analy)
         stock_content_pos = crawling.content_pos(Analy)
@@ -795,6 +792,9 @@ class StockSearch(StockList):
 
         ## Word Cloud 함수
         context['Word_cloud'] = crawling.Word_Cloud(tags)
+
+        ## TEST
+        return context
 
         ## 감성 점수 부여
         sent_score = crawling.sentiment_score(stock_title_pos, stock_content_pos)
