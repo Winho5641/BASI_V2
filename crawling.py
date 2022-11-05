@@ -241,7 +241,7 @@ def Word_Cloud(words) :
     fig, ax = plt.subplots()
 
     #font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/NanumBarunGothicBold.ttf'
-    font = '/usr/share/fonts/truetype/nanum/NanumGothicBold.otf'
+    font = '/usr/share/fonts/truetype/nanum/NanumGothicExtraBold.otf'
     wordcloud = WordCloud(font_path=font, background_color='white', color_func=color_func, width=1000, height=800,
                           mask=custom_mask,
                           # contour_color='#000000',contour_width=3,  ## 테두리 작업
