@@ -773,10 +773,11 @@ class StockSearch(StockList):
             context['Sent_graph'] = "데이터가 존재하지 않습니다."
             return context
 
-        return context
-
         ## post count graph 함수
         context['Count_graph'] = crawling.Count_Graph(Analy.day)
+
+        ## TEST
+        return context
 
         ## title, content 불용어제거 + 형태소 분석 실행
         stock_title_pos = crawling.title_pos(Analy)
