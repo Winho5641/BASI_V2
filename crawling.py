@@ -240,8 +240,8 @@ def Word_Cloud(words) :
     custom_mask = np.array(Image.open("home/static/home/css/oval.png"))
     fig, ax = plt.subplots()
 
-    #font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/BlackHanSans-Regular.ttf'
-    font = '/usr/share/fonts/truetype/nanum/BlackHanSans-Regular.ttf'
+    #font = 'C:/Users/tooly/AppData/Local/Microsoft/Windows/Fonts/NanumBarunGothicBold.ttf'
+    font = '/usr/share/fonts/truetype/nanum/NanumGothicBold.otf'
     wordcloud = WordCloud(font_path=font, background_color='white', color_func=color_func, width=1000, height=800,
                           mask=custom_mask,
                           # contour_color='#000000',contour_width=3,  ## 테두리 작업
