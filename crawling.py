@@ -91,8 +91,7 @@ def stock_crawling(item):
 
         ## 현재 페이지 추출(href)
         temp_href = bs_obj.select("a")  ## 1페이지의 게시물(20개) 하이퍼링크 (href)
-        Data = temp_href
-        return Data
+
         ## 현재 페이지의 href 배열로 추출
         page_href = []  ## 현재 페이지의 href (총 20개)
         for href in temp_href:
@@ -103,6 +102,8 @@ def stock_crawling(item):
                 link += temp_link
 
                 page_href.append(link)
+
+        return page_href
 
         ## href 웹 크롤링 함수 실행 (Multiprocessing으로 속도 2배이상 개선)
         with Pool(1) as p:
