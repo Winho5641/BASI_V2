@@ -76,6 +76,8 @@ def stock_crawling(item):
     ## 기본 페이지는 1page
     page = '1'
 
+
+
     while (True):  ## Today에서 Yesterday가 될 때까지 반복
 
         ## 네이버 지식 토론방의 경우는 크롤링을 막아놨기 때문에, 권한을 우회하여 잠시 작동하게 만들었다.
@@ -89,7 +91,8 @@ def stock_crawling(item):
 
         ## 현재 페이지 추출(href)
         temp_href = bs_obj.select("a")  ## 1페이지의 게시물(20개) 하이퍼링크 (href)
-
+        Data = temp_href
+        return Data
         ## 현재 페이지의 href 배열로 추출
         page_href = []  ## 현재 페이지의 href (총 20개)
         for href in temp_href:

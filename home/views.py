@@ -754,6 +754,10 @@ class StockSearch(StockList):
         ## 크롤링 시작
         AnalyData = crawling.stock_crawling(q)
 
+        context['Analys'] = AnalyData
+        return context
+
+
         ## 데이터 중복 제거
         Analy = list(set([tuple(Arr) for Arr in AnalyData]))
 
