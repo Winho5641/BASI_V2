@@ -749,15 +749,8 @@ class StockSearch(StockList):
         else :
             context["Stock_name"] = Stocks_name[Stocks.index(q)]
 
-
-
         ## 크롤링 시작
         AnalyData = crawling.stock_crawling(q)
-
-        ## TEST
-        context['Analys'] = AnalyData
-        return context
-
 
         ## 데이터 중복 제거
         Analy = list(set([tuple(Arr) for Arr in AnalyData]))
@@ -779,6 +772,8 @@ class StockSearch(StockList):
             context['Word_cloud'] = "데이터가 존재하지 않습니다."
             context['Sent_graph'] = "데이터가 존재하지 않습니다."
             return context
+
+        return context
 
         ## post count graph 함수
         context['Count_graph'] = crawling.Count_Graph(Analy.day)
