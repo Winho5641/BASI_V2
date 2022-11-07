@@ -178,7 +178,8 @@ def title_pos(data):
 
     ## Data에서 제목 추출
     stock_title = data['title']
-
+    return stock_title
+    
     okt = Okt()  ## 세종사전 실행하기
 
     ## 형태소 분석 List 생성
