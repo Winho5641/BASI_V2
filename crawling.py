@@ -189,7 +189,6 @@ def title_pos(data):
     for n in range(0, len(data)):
         morph_title = okt.pos(stock_title[n])
         title_pos.append(morph_title)
-        return title_pos
 
     return title_pos
 
