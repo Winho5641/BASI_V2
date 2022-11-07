@@ -790,14 +790,10 @@ class StockSearch(StockList):
         counts = Counter(stock_noun_list)
         tags = counts.most_common(50)  ## 가장 많은 50개의 명사 추출
 
-        ## TEST
-        context['tag'] = tags
-        return context
-
-
         ## Word Cloud 함수
         context['Word_cloud'] = crawling.Word_Cloud(tags)
 
+        return context
 
 
         ## 감성 점수 부여
