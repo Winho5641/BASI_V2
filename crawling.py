@@ -181,6 +181,8 @@ def title_pos(data):
 
     okt = Okt()  ## 세종사전 실행하기
 
+    return len(stock_title)
+
     ## 형태소 분석 List 생성
     title_pos = []
 
