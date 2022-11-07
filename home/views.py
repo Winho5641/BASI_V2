@@ -793,9 +793,6 @@ class StockSearch(StockList):
         ## Word Cloud 함수
         context['Word_cloud'] = crawling.Word_Cloud(tags)
 
-        return context
-
-
         ## 감성 점수 부여
         sent_score = crawling.sentiment_score(stock_title_pos, stock_content_pos)
 
