@@ -103,19 +103,17 @@ def stock_crawling(item):
 
                 page_href.append(link)
 
-
+        """
         ## href 웹 크롤링 함수 실행 (Multiprocessing으로 속도 2배이상 개선)
         with Pool(2) as p:
             post_datas = p.map(href_stock_crawling, page_href)  ## Return으로 post 데이터 list 가져옴
-
-
-
         """
+
         ## href 웹 크롤링 함수 실행 (Multiprocessing 오류 대비)
         post_datas = []
         for link in page_href :
             post_datas.append(href_stock_crawling(link))
-        """
+
 
 
         ## 수집된 데이터를 None을 제외하고 데이터 추가
