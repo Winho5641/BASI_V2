@@ -179,15 +179,14 @@ def title_pos(data):
     ## Data에서 제목 추출
     stock_title = data['title']
 
-
     okt = Okt()  ## 세종사전 실행하기
 
     ## 형태소 분석 List 생성
     title_pos = []
 
     ## 형태소 분석 (title)
-    for n in range(0, len(data)):
-        morph_title = okt.pos(stock_title[n])
+    for title in stock_title:
+        morph_title = okt.pos(title)
         title_pos.append(morph_title)
 
     return title_pos
