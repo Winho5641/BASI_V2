@@ -780,11 +780,6 @@ class StockSearch(StockList):
         stock_title_pos = crawling.title_pos(Analy)
         stock_content_pos = crawling.content_pos(Analy)
 
-        ## TEST
-        context['sttitle'] = stock_title_pos
-        context['stcontent'] = stock_content_pos
-        return context
-
         ## title, content 명사 모음 List
         stock_noun_list = crawling.Noun_filter(stock_title_pos, stock_content_pos)
 
@@ -794,6 +789,10 @@ class StockSearch(StockList):
         ## 단어별 개수세기
         counts = Counter(stock_noun_list)
         tags = counts.most_common(50)  ## 가장 많은 50개의 명사 추출
+
+        ## TEST
+        context['tag'] = tags
+        return context
 
 
         ## Word Cloud 함수
