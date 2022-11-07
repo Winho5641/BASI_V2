@@ -776,18 +776,13 @@ class StockSearch(StockList):
         ## post count graph 함수
         context['Count_graph'] = crawling.Count_Graph(Analy.day)
 
-
         ## title, content 불용어제거 + 형태소 분석 실행
         stock_title_pos = crawling.title_pos(Analy)
-        context['sttitle'] = stock_title_pos    ## TEST
-        return context
-
-
         stock_content_pos = crawling.content_pos(Analy)
 
-        context['stcontent'] = stock_content_pos
-
         ## TEST
+        context['sttitle'] = stock_title_pos
+        context['stcontent'] = stock_content_pos
         return context
 
         ## title, content 명사 모음 List
