@@ -178,8 +178,8 @@ def title_pos(data):
 
     ## Data에서 제목 추출
     stock_title = data['title']
-    return stock_title
-    
+
+
     okt = Okt()  ## 세종사전 실행하기
 
     ## 형태소 분석 List 생성
@@ -189,6 +189,7 @@ def title_pos(data):
     for n in range(0, len(data)):
         morph_title = okt.pos(stock_title[n])
         title_pos.append(morph_title)
+        return title_pos
 
     return title_pos
 
@@ -209,6 +210,7 @@ def content_pos(data):
     for n in range(0, len(data)):
         morph_content = okt.pos(stock_content[n])
         content_pos.append(morph_content)
+
 
     return content_pos
 
